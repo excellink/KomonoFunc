@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # rename_files
-# 功能：统一修改文件名，保持原文件类型不变，若非文件则不进行修改
+# 功能：按某文件一属性排序并统一修改文件名，保持原文件类型不变，若非文件则不进行修改
 import os
 
 
 def rename_files(f_tuple):
-    n = 0   # 计数变量
-    print("请输入所需更改的文件名：")
+    n = 1   # 计数变量,文件编号从1开始
+    print(" 请输入所需更改的文件名: ".center(30, '*'))
     str_name = input()
     for t in f_tuple:
         f_dir = t[0]
@@ -17,7 +17,7 @@ def rename_files(f_tuple):
         print(f_dir, "---->", new_name)
 
 
-def createdict(file_path) -> tuple:
+def create_dict(file_path) -> tuple:
     files = os.listdir(file_path)   # 取出file_path地址中的所有文件/文件夹名组成list
     f_key = []
     f_value = []
@@ -27,14 +27,15 @@ def createdict(file_path) -> tuple:
             continue
         else:
             file_dir = os.path.join(file_path, file)  # 连接file路径和名字
-            f_size = os.path.getsize(os.path.join(file_path, file))  # 获取大小
+#            f_att = os.path.getmtime(os.path.join(file_path, file))    # 获取修改时间
+            f_att = os.path.getsize(os.path.join(file_path, file))  # 获取大小
             f_key.append(file_dir)
-            f_value.append(f_size)
+            f_value.append(f_att)
     f_tuple = dict(zip(f_key, f_value))
     f_tuple_sorted = sorted(f_tuple.items(), key=lambda x: x[1])
     return f_tuple_sorted
 
 
-filepath = 'D:\\test'
-temp = createdict(filepath)
+filepath = r'D:\test'
+temp = create_dict(filepath)
 rename_files(temp)
